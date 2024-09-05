@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/contact-api-db
+    username: postgres
+    password: fayxos20
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      enabled:
+        true
+      max-file-size:
+        50MB
+      max-request-size:
+        50MB
+  web:
+    resources:
+      static-locations:
+        classpath:/static/, file:/images/
