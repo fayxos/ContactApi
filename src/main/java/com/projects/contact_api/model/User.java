@@ -29,6 +29,8 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private boolean isEmailVerified;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
 
@@ -77,9 +79,7 @@ public class User implements UserDetails {
     }
 
     public void updateData(User userDetails) {
-        if(userDetails.getEmail() != null && !userDetails.getEmail().isEmpty()) setEmail(userDetails.getEmail());
         if(userDetails.getFirstname() != null && !userDetails.getFirstname().isEmpty()) setFirstname(userDetails.getFirstname());
         if(userDetails.getLastname() != null && !userDetails.getLastname().isEmpty()) setLastname(userDetails.getLastname());
-        if(userDetails.getRoles() != null && !userDetails.getRoles().isEmpty()) setRoles(userDetails.getRoles());
     }
 }

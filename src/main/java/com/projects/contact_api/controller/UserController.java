@@ -29,6 +29,12 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping("/getAuthenticated")
+    public ResponseEntity<User> getAuthenticated() {
+        User user = userService.getAuthenticated();
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     @PostMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody User userDetails) {
         User updatedUser = userService.updateUser(userId, userDetails);
@@ -41,7 +47,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{userId}/logout")
+    @PostMapping("/{userId}/logout")
     public ResponseEntity<Void> logout(@PathVariable Integer userId) {
         userService.logout(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -27,7 +27,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponseDTO register(RegisterRequestDTO request) {
-        if(!userRoleDAO.findByName("USER").isPresent()) userRoleDAO.save(new UserRole("USER"));
+        if(userRoleDAO.findByName("USER").isEmpty()) userRoleDAO.save(new UserRole("USER"));
 
         if(userDAO.findByEmail(request.getEmail()).isPresent()) throw new RuntimeException("Email already exists");
 
@@ -37,6 +37,7 @@ public class AuthenticationService {
             .email(request.getEmail())
             .password(passwordEncoder.encode(request.getPassword()))
             .roles(Set.of(userRoleDAO.findByName("USER").orElseThrow()))
+            .isEmailVerified(false)
             .build();
 
         userDAO.save(user);

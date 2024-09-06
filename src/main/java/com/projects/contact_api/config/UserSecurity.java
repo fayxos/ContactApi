@@ -16,7 +16,10 @@ public class UserSecurity implements AuthorizationManager<RequestAuthorizationCo
     @Override
     public AuthorizationDecision check(Supplier authenticationSupplier, RequestAuthorizationContext ctx) {
         // get {userId} from the request
-        Integer userId = Integer.parseInt(ctx.getVariables().get("userId"));
+        String var = ctx.getVariables().get("userId");
+        if(var.equals("getAuthenticated")) return new AuthorizationDecision(true);
+
+        Integer userId = Integer.parseInt(var);
         Authentication authentication = (Authentication) authenticationSupplier.get();
         return new AuthorizationDecision(hasUserId(authentication, userId));
     }

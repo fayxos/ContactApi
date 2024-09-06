@@ -22,3 +22,9 @@ spring:
     resources:
       static-locations:
         classpath:/static/, file:/images/
+
+server:
+  address:
+    192.168.178.159
+  port:
+    8080

@@ -16,7 +16,6 @@ public class UserService {
 
     private final UserDAO userDAO;
     private final RefreshTokenService refreshTokenService;
-    private final PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsers() {
         return userDAO.findAll();
@@ -24,6 +23,10 @@ public class UserService {
 
     public User getUserById(Integer userId) {
         return userDAO.findById(userId).orElseThrow();
+    }
+
+    public User getAuthenticated() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public User updateUser(Integer userId, User userDetails) {
