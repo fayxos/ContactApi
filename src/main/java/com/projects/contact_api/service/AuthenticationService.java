@@ -1,8 +1,10 @@
 package com.projects.contact_api.service;
 
+import com.projects.contact_api.dao.ContactInfoDAO;
 import com.projects.contact_api.dto.response.AuthResponseDTO;
 import com.projects.contact_api.dto.request.LoginRequestDTO;
 import com.projects.contact_api.dto.request.RegisterRequestDTO;
+import com.projects.contact_api.model.ContactInfo;
 import com.projects.contact_api.model.User;
 import com.projects.contact_api.dao.UserDAO;
 import com.projects.contact_api.model.UserRole;
@@ -21,6 +23,7 @@ public class AuthenticationService {
 
     private final UserDAO userDAO;
     private final UserRoleDAO userRoleDAO;
+    private final ContactInfoDAO contactInfoDAO;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
@@ -40,7 +43,15 @@ public class AuthenticationService {
             .isEmailVerified(false)
             .build();
 
-        userDAO.save(user);
+        user = userDAO.save(user);
+
+        var userInfo = ContactInfo.builder()
+                .firstname(user.getFirstname())
+                .lastname(user.getLastname())
+                .user(user)
+                .build();
+
+        contactInfoDAO.save(userInfo);
 
         var jwtToken = jwtService.generateToken(user.getUsername());
         var refreshToken = refreshTokenService.createRefreshToken(user.getUsername());
