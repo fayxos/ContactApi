@@ -29,15 +29,17 @@ public class RefreshTokenController {
                 .map(user -> {
                     String accessToken = jwtService.generateToken(((User) user).getEmail());
 
-                    // delete olf refresh token
-                    refreshTokenService.deleteToken(refreshTokenService.findByToken(refreshTokenRequestDTO.getToken()).orElseThrow());
+                    // delete old refresh token
+                    // refreshTokenService.deleteToken(refreshTokenService.findByToken(refreshTokenRequestDTO.getToken()).orElseThrow());
 
                     // generate new refresh token
-                    var newRefreshToken = refreshTokenService.createRefreshToken(user.getEmail());
+                    // var newRefreshToken = refreshTokenService.createRefreshToken(user.getEmail());
+
+                    RefreshToken refreshToken = refreshTokenService.findByUser((User) user).orElseThrow();
 
                     return RefreshTokenResponseDTO.builder()
                             .accessToken(accessToken)
-                            .refreshToken(newRefreshToken.getToken()).build();
+                            .refreshToken(refreshToken.getToken()).build();
                 }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
     }
 

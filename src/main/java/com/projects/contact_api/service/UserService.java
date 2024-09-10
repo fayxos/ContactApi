@@ -35,6 +35,17 @@ public class UserService {
         return userDAO.save(user);
     }
 
+    public Boolean isEmailVerified(Integer userId) {
+        User user = getUserById(userId);
+        return user.isEmailVerified();
+    }
+
+    public void verifyEmail(Integer userId) {
+        User user = getUserById(userId);
+        user.setEmailVerified(!user.isEmailVerified());
+        userDAO.save(user);
+    }
+
     public void deleteUser(Integer userId) {
         User user = userDAO.findById(userId).orElseThrow();
         RefreshToken refreshToken = refreshTokenService.findByUser(user).orElseThrow();

@@ -82,7 +82,7 @@ public class ContactService {
         ContactInfo contactInfo = contactInfoDAO.findByUser(user).orElseThrow();
 
         // Only allow PNGs
-        if("image/png".equalsIgnoreCase(multipartFile.getContentType())) throw new RuntimeException("Wrong file format");
+        if(!"image/png".equalsIgnoreCase(multipartFile.getContentType())) throw new RuntimeException("Wrong file format");
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         String uploadDir = "images/" + userId;

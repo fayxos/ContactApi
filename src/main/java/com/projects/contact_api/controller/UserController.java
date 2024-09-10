@@ -1,5 +1,6 @@
 package com.projects.contact_api.controller;
 
+import com.projects.contact_api.dto.response.EmailVerifiedResponseDTO;
 import com.projects.contact_api.model.User;
 import com.projects.contact_api.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,20 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody User userDetails) {
         User updatedUser = userService.updateUser(userId, userDetails);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/isEmailVerified")
+    public ResponseEntity<EmailVerifiedResponseDTO> isEmailVerified(@PathVariable Integer userId) {
+        Boolean isEmailVerified = userService.isEmailVerified(userId);
+        EmailVerifiedResponseDTO responseDTO = EmailVerifiedResponseDTO.builder().isEmailVerified(isEmailVerified).build();
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    // TODO verify Email and return link that opens app
+    @PostMapping("/{userId}/verifyEmail")
+    public ResponseEntity<Boolean> verifyEmail(@PathVariable Integer userId) {
+        userService.verifyEmail(userId);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
